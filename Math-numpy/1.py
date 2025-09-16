@@ -76,3 +76,35 @@ broadcasted = A + b
 print(broadcasted)
 
 
+# Compute determinant of:
+# M = [[2, 5],
+#      [1, 3]]
+# Compute inverse of:
+# N = [[4, 7],
+#      [2, 6]]
+# Verify N × N⁻¹ = I.
+# Compute rank of:
+# P = [[1, 2, 3],
+#      [4, 5, 6],
+#      [7, 8, 9]]
+# (Think) Why would a regression model fail if your feature matrix is singular?
+
+
+M = [[2, 5],
+     [1, 3]]
+det_M = np.linalg.det(M)
+print(det_M)
+
+N = [[4, 7],
+     [2, 6]]
+inv_N = np.linalg.inv(N)
+print(inv_N)
+print(np.matmul(N, inv_N))
+
+P = [[1, 2, 3],
+     [4, 5, 6],
+     [7, 8, 9]]
+det_P = np.linalg.det(P)     
+rank_P = np.linalg.matrix_rank(P)
+print(det_P)
+print(rank_P)
