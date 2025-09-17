@@ -70,6 +70,41 @@ def drop_cols_with_nan(X, thresh=0.5):
     keep = frac < thresh
     return X[:, keep], keep  # return mask of kept columns
 
+# # ------------Normalize Features-----Min-Max Normalization-----Z-Score Normalization------------
+
+# Normalization = rescaling features for fair contribution.
+# Min-Max: [0,1], sensitive to outliers, preserves distribution.
+# Z-Score: mean=0, std=1, useful for Gaussian-like data.
+# Choice depends on algorithm and dataset.
+
+def min_max_normalize(data):
+    """
+    Min-Max Normalization:
+    Scales each feature (column) to [0, 1] using:
+        x' = (x - min) / (max - min)
+    """
+    min_vals = data.min(axis=0)
+    max_vals = data.max(axis=0)
+    return (data - min_vals) / (max_vals - min_vals)
+
+def z_score_normalize(data):
+    """
+    Z-Score Normalization:
+    Standardizes each feature (column) to mean=0, std=1 using:
+        z = (x - μ) / σ
+    """
+    mean_vals = data.mean(axis=0)
+    std_vals = data.std(axis=0)
+    return (data - mean_vals) / std_vals
+
+def add_daily_average(data):
+    """
+    Extra Feature - Daily Average:
+    For each row (day), compute average of all columns (sensors)
+    and append it as a new column.
+    """
+    daily_avg = data.mean(axis=1).reshape(-1, 1)
+    return np.hstack([data, daily_avg])
 
 data = np.array([
     [30, 32, np.nan, np.nan],  # Day 1
@@ -78,8 +113,11 @@ data = np.array([
     [33, 35, 37, np.nan]       # Day 4
 ])
 
-print(missing_summary(data))
-print(impute_column_mean(data))
-print(impute_column_mean(data))
-print(impute_constant(data))
+print("Missing Summary:\n", missing_summary(data))
+print("Impute Column Mean:\n", impute_column_mean(data))
+print("Impute Column Median:\n", impute_column_median(data))
+print("Impute Column Constants:\n", impute_constant(data))
+print("Min-Max Normalized:\n", min_max_normalize(data))
+print("Z-Score Normalized:\n", z_score_normalize(data))
+print("With Daily Average:\n", add_daily_average(data))
 
