@@ -37,7 +37,7 @@ def impute_column_mean(X):
 def impute_column_median(X):
   """Replace NaN in each column by the column median (ignoring NaN)."""
   X = X.astype(float, copy=True)
-  col_mdians = np.nanmedian(X, axis=1)
+  col_mdians = np.nanmedian(X, axis=0)
   inds = np.where(np.isnan(X))
   nan_cols = np.isnan(col_mdians)
   if np.any(nan_cols):
@@ -51,6 +51,24 @@ def impute_constant(X, value=0.0):
     X = X.astype(float, copy=True)
     X[np.isnan(X)] = value
     return X
+
+# ---------- Drop rows/columns ----------
+def drop_rows_with_nan(X, how='any'):
+    """If how='any' drop row if any NaN; if how='all' drop if all NaN."""
+    if how == 'any':
+        mask = ~np.isnan(X).any(axis=1)
+    else:
+        mask = ~np.isnan(X).all(axis=1)
+    return X[mask]
+
+def drop_cols_with_nan(X, thresh=0.5):
+    """
+    Drop columns with fraction of NaN >= thresh.
+    thresh between 0 and 1 (e.g., 0.5 -> drop columns with >=50% missing).
+    """
+    frac = np.isnan(X).sum(axis=0) / X.shape[0]
+    keep = frac < thresh
+    return X[:, keep], keep  # return mask of kept columns
 
 
 data = np.array([
