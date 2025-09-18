@@ -1,0 +1,68 @@
+import pandas as pd
+
+# Load the patients.csv file from the same directory
+df = pd.read_csv("patients.csv")
+
+
+# First Look at the Data
+print("\nFirst 5 rows:\n")
+print(df.head())
+print("\n\nLast five rows:\n")
+print(df.tail())
+print("\n\nRows, Columns:\n")
+print(df.shape)
+print("\n\ncolumn types, non-null counts:\n")
+print(df.info())
+print("\n\nsummary stats (mean, min, max, etc.):\n")
+print(df.describe())
+
+# Selecting Columns
+print(df["Age"])
+print(df[["Gender", "Age"]])
+
+
+# Selecting Rows
+
+# .iloc[] → index-based (numbers)
+# df.iloc[row_selection, column_selection]
+print(df.iloc[0])
+print(df.iloc[0:3, 0:5])
+df.iloc[[0, 3], [1, 2]]  # rows 0 and 3, columns 1 and 2
+
+# .loc[] → label-based (names/conditions)
+# df.loc[row_selection, column_selection]
+print(df.loc[0])
+print(df.loc[df["Age"]>60, ["Age", "Gender", "Condition", "Outcome"]])
+
+df_copy = df.copy()
+df_copy.loc[df_copy["Age"]>60, "Outcome"] = "Critical"  # changes outcomes of all patients over 60 to Critical
+print(df_copy.loc[df_copy["Age"]>60, "Outcome"])
+
+# Filtering Rows (Boolean Indexing)
+older_patients = df[df["Age"] > 50]
+print(older_patients)
+
+# male_over_50 = df.query('Age > 50 and Gender == "Male"')
+male_over_50 = df[(df["Age"]>50) & (df["Gender"]=="Male")]
+print(male_over_50)
+
+
+# Mini-Task 
+
+# Load a CSV dataset (I suggest heart disease dataset: heart.csv if you have it).
+# Show:
+# First 10 rows.
+# Total rows and columns.
+# Patients older than 50.
+# Columns: age, sex, and cholesterol.
+
+df = pd.read_csv("heart.csv")
+
+print("\nFirst 10 rows:\n\n")
+print(df.head(10))
+print("\nTotal Rows and Columns:\n\n")
+print(df.shape)
+print("\nPatients older than 50:\n\n")
+print(df[df["age"]>50])
+print("\nColumns: age, sex and cholesterol:\n\n")
+print(df.loc[:,["age", "sex", "cholesterol"]])
