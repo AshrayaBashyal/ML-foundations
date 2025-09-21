@@ -54,8 +54,8 @@ plt.ylabel("Cholesterol")
 #     (Learn: df.corr, sns.heatmap, annot=True)
 corr = df.corr(numeric_only=True)
 
-plt.figure(figsize=(6, 4))
-sns.heatmap(corr, annot=True, cmap="coolwarm", fmt=".2f")
+plt.figure()
+sns.heatmap(corr, annot=True, cmap="coolwarm", fmt=".2f", vmin=-1, vmax=1)
 plt.title("Correlation Heatmap")
 # plt.show()
 
@@ -63,7 +63,8 @@ plt.title("Correlation Heatmap")
 # Q4. Bonus: Plot boxplots of cholesterol for diseased vs non-diseased patients.
 #     (Learn: sns.boxplot, x/y usage, category comparison)
 plt.figure(figsize=(6, 4))
-sns.boxplot(x="disease", y="cholesterol", data=df, palette="pastel")
+sns.boxplot(x="disease", y="cholesterol",hue="disease", legend=False, data=df, palette="pastel")
+# Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `x` variable to `hue` and set `legend=False` for the same effect.
 plt.title("Cholesterol Levels: Diseased vs Healthy")
 plt.xlabel("Disease (0 = Healthy, 1 = Diseased)")
 plt.ylabel("Cholesterol")
