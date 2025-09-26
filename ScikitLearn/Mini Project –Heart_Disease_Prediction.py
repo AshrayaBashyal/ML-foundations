@@ -6,6 +6,16 @@
 # thalach (max heart rate),
 # target → 1 = disease, 0 = no disease.
 
+# Goal:
+
+# Load and clean a healthcare dataset
+
+# Train Logistic Regression, Decision Tree, k-NN
+
+# Evaluate with accuracy, precision, recall
+
+# Compare results
+
 # Train all 3 models and compare metrics.
 # Try different hyperparameters:
 # max_depth for DecisionTree
