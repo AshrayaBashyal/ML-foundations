@@ -86,6 +86,12 @@ knn = KNeighborsClassifier(n_neighbors=5)
 knn.fit(X_train, Y_train)
 y_pred_knn = knn.predict(X_test)
 
+# Experiment with k(n_negihbors)
+for k in [1, 3, 5, 6, 8, 10, 12, 14, 16]:
+    knn = KNeighborsClassifier(n_neighbors=k)
+    knn.fit(X_train, Y_train)
+    print(f"k={k} → Accuracy:", knn.score(X_test, Y_test))
+
 # Evaluate Models
 def evaluate_model(y_true, y_pred, name):
   print(f"--- {name} ---")
@@ -108,4 +114,52 @@ results = {
 results_df = pd.DataFrame(results)
 print(results_df)
 
+#                 Models  Accuracy  Precision    Recall
+# 0  Logistic Regression  0.868852   0.812500  0.928571
+# 1        Decision Tree  0.786885   0.727273  0.857143
+# 2                 K-NN  0.737705   0.800000  0.571429
 
+
+# Models and their metrics
+models = ["Logistic Regression", "Decision Tree", "k-NN"]
+accuracy = [0.868852, 0.786885, 0.737705]
+precision = [0.8125, 0.727273, 0.8]
+recall = [0.928571, 0.857143, 0.571429]
+
+# Simple grouped bar chart using pandas (optional for simplicity)
+df = pd.DataFrame({
+    'Accuracy': accuracy,
+    'Precision': precision,
+    'Recall': recall
+}, index=models)
+
+df.plot(kind='bar', figsize=(8,5), ylim=(0,1), color=['skyblue', 'lightgreen', 'salmon'])
+plt.title("Model Comparison: Accuracy, Precision, Recall")
+plt.ylabel("Score")
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+plt.show()
+
+
+# Summary:
+
+# Logistic Regression has the best overall tradeoff: high accuracy (0.869), precision (0.813), and recall (0.929).  
+# Decision Tree is lower on all metrics.  
+# k-NN has decent precision (0.800) but very low recall (0.571), missing many positives.  
+# Use Logistic Regression for overall balance.  
+# Use k-NN if high precision is more important.
+
+
+# Guidelines: When to use which
+
+# If you have labeled data (supervised):
+# Linear boundary: Logistic Regression
+# Nonlinear patterns: Decision Tree or k-NN
+# Large dataset: Logistic Regression or Decision Tree (k-NN slows down with many samples)
+# Need probability estimates: Logistic Regression
+# If you have unlabeled data (unsupervised):
+# Use K-Means to find groups or patterns.
+# Performance trade-offs:
+# Logistic Regression → fast, interpretable, good baseline
+# Decision Tree → can overfit, visualize, handles complex data
+# k-NN → simple but slow on large data, sensitive to features
+# K-Means → exploratory analysis, no labels required
